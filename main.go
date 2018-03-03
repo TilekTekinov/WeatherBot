@@ -231,7 +231,7 @@ func main() {
 				        c6 <- "Bishkek pogoda.desko.kg: \t" + a + "\n"
 				    })
 				}()
-				if sum > 0 {
+				if sum > 0.0 {
 				    msg0 += <-c + <-c1 + <- c2 + <-c3 + <-c4 + <-c5 + <-c6 + <-c7 + "\n_Средняя по погодам_ : \t\t" + "*" + strconv.FormatFloat(sum/8, 'f', 2, 32) + "*\n" + timeTag
 				} else {
 					msg0 += <-c + <-c1 + <- c2 + <-c3 + <-c4 + <-c5 + <-c6 + <-c7 + "\n_Средняя по погодам_ : \t\t" + "*+" + strconv.FormatFloat(sum/8, 'f', 2, 32) + "*\n" + timeTag
@@ -240,7 +240,7 @@ func main() {
 				msg1.ParseMode = "markdown"
 				bot.Send(msg1)
 				msg0 = ""
-				sum = 0
+				sum = 0.0
 			default :
 				bot.Send(tgbotapi.NewMessage(update.Message.Chat.ID, "Моя твоя не понимать\nСорян))"))
 		}
