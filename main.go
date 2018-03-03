@@ -27,7 +27,7 @@ func checkin(errt error) {
  }
 
 func main() {
-	bot, err := tgbotapi.NewBotAPI("535038931:AAFudx4faFxcVPLLhFdt2jGjuIIe9RvBiAU")
+	bot, err := tgbotapi.NewBotAPI("Token")
 	if err != nil {
 		log.Panic(err)
 	}
