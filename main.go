@@ -1,33 +1,47 @@
 package main
 
 import (
+	"os"
 	"log"
 	"strconv"
 	s "strings"
+	"encoding/json"
 
 	"gopkg.in/telegram-bot-api.v4"
 	"github.com/PuerkitoBio/goquery"
 )
 
 var (
-	timeTag, msg, a string
+	timeTag, msg string
 	sum float64
 )
+
+type Config struct {
+	TelegramBotToken string
+}
 
 func check(err error) {
 	if err != nil {
     	log.Fatal(err)
     }
- }
+}
 
 func checkin(errt error) {
 	if errt != nil {
         panic(errt)
     }
- }
+}
 
 func main() {
-	bot, err := tgbotapi.NewBotAPI("Token")
+	file, _ := os.Open("config.json")
+	decoder := json.NewDecoder(file)
+	configuration := Config{}
+	err := decoder.Decode(&configuration)
+	if err != nil {
+		log.Panic(err)
+	}
+
+	bot, err := tgbotapi.NewBotAPI(configuration.TelegramBotToken)
 	if err != nil {
 		log.Panic(err)
 	}
@@ -66,10 +80,11 @@ func main() {
 			        i, errt := strconv.ParseFloat(spanTag, 16)
 			        checkin(errt)
 			        sum += i
+			        a := ""
 			        if i > 0{
-			        	a = "+" + spanTag
+			        	a = "*+" + spanTag + "*"
 			        } else {
-			        	a = "-" + spanTag
+			        	a = "*-" + spanTag + "*"
 			        }
 			        c1 <- "Bishkek www.msn.com: \t\t" + a + "\n"
 			    })
@@ -84,10 +99,11 @@ func main() {
 		        i, errt := strconv.ParseFloat(spanTag, 16)
 		        checkin(errt)
 		        sum += i
+		        a := ""
 		        if i > 0{
-					a = "+" + spanTag
-				} else {
-			    	a = "-" + spanTag
+			       	a = "*+" + spanTag + "*"
+			    } else {
+			       	a = "*-" + spanTag + "*"
 			    }
 		        c <- "Bishkek rambler.ru: \t\t" + a + "\n"
 		    })
@@ -104,10 +120,11 @@ func main() {
 			        i, errt := strconv.ParseFloat(spanTag[:len(spanTag) - 4], 16)
 			        checkin(errt)
 			        sum += i
+			        a := ""
 			        if i > 0{
-			        	a = "+" + spanTag[:len(spanTag) - 4]
+			        	a = "*+" + spanTag[:len(spanTag) - 4] + "*"
 			        } else {
-			        	a = "-" + spanTag[:len(spanTag) - 4]
+			        	a = "*-" + spanTag[:len(spanTag) - 4] + "*"
 			        }
 			        c3 <- "Bishkek rp5.ru: \t\t" + a + "\n"
 			    })
@@ -124,7 +141,8 @@ func main() {
 		        i, errt := strconv.ParseFloat(spanTag[:len(spanTag) - 2], 16)
 		        checkin(errt)
 		        sum += i
-		        c2 <- "Bishkek pogoda.mail.ru: \t" + spanTag[:len(spanTag) - 2] + "\n"
+			    a := "*" + spanTag[:len(spanTag) - 2] + "*"
+		        c2 <- "Bishkek pogoda.mail.ru: \t" + a + "\n"
 		    })
 		}()
 
@@ -139,7 +157,8 @@ func main() {
 			        i, errt := strconv.ParseFloat(spanTag, 16)
 			        checkin(errt)
 			        sum += i
-			        c5 <- "Bishkek www.foreca.ru: \t\t" + spanTag + "\n"
+				    a := "*" + spanTag + "*"
+			        c5 <- "Bishkek www.foreca.ru: \t\t" + a + "\n"
 			    })
 			}()
 			doc, err := goquery.NewDocument("https://yandex.ru/pogoda/bishkek")
@@ -148,15 +167,16 @@ func main() {
 		    doc.Find("body .fact .fact__temp").Each(func(index int, item *goquery.Selection) {
 		        spanTag := item.Find(".temp__value").Text()
 
-		        if len(spanTag) > 3 {
-		            spanTag = spanTag[3:]
-		            spanTag = "-" + spanTag
-		        }
-
 		        i, errt := strconv.ParseFloat(spanTag, 16)
 		        checkin(errt)
 		        sum += i
-		        c4 <- "Bishkek yandex.ru: \t\t" + spanTag + "\n"
+		        a := ""
+		        if i > 0{
+			       	a = "*" + spanTag + "*"
+			    } else {
+			       	a = "*-" + spanTag[3:] + "*"
+			    }
+		        c4 <- "Bishkek yandex.ru: \t\t" + a + "\n"
 		    })
 		}()
 
@@ -171,7 +191,8 @@ func main() {
 			        i, errt := strconv.ParseFloat(spanTag[:len(spanTag) - 2], 16)
 			        checkin(errt)
 			        sum += i
-			        c7 <- "Bishkek pogoda.co.il: \t\t" + spanTag[:len(spanTag) - 2] + "\n"
+			        a := "*" + spanTag[:len(spanTag) - 2] + "*"
+			        c7 <- "Bishkek pogoda.co.il: \t\t" + a + "\n"
 			    })
 			}()
 
@@ -185,12 +206,13 @@ func main() {
 		        i, errt := strconv.ParseFloat(spanTag[:len(spanTag) - 3], 16)
 		        checkin(errt)
 		        sum += i
-		        c6 <- "Bishkek pogoda.desko.kg: \t" + spanTag[:len(spanTag) - 3] + "\n"
+		        a := "*" + spanTag[:len(spanTag) - 3] + "*"
+		        c6 <- "Bishkek pogoda.desko.kg: \t" + a + "\n"
 		    })
 		}()
-
-	    msg += <-c + <-c1 + <- c2 + <-c3 + <-c4 + <-c5 + <-c6 + <-c7 + "\nСредняя по погодам: \t\t" + strconv.FormatFloat(sum/8, 'f', 2, 32) + "\n" + timeTag
+	    msg += <-c + <-c1 + <- c2 + <-c3 + <-c4 + <-c5 + <-c6 + <-c7 + "\n_Средняя по погодам_ : \t\t" + "*" + strconv.FormatFloat(sum/8, 'f', 2, 32) + "*\n" + timeTag
 		msg1 := tgbotapi.NewMessage(update.Message.Chat.ID, msg)
+		msg1.ParseMode = "markdown"
 		bot.Send(msg1)
 	}
 }
