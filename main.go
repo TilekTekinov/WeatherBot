@@ -4,6 +4,7 @@ import (
 	"os"
 	"log"
 	"strconv"
+	"net/http"
 	s "strings"
 	"encoding/json"
 
@@ -38,6 +39,10 @@ func checkin(errt error) {
     }
 }
 
+func MainHandler(resp http.ResponseWriter, _ *http.Request) {
+    resp.Write([]byte("Hi there! I'm DndSpellsBot!"))
+}
+
 func main() {
 	file, _ := os.Open("config.json")
 	decoder := json.NewDecoder(file)
@@ -59,7 +64,10 @@ func main() {
 	u := tgbotapi.NewUpdate(0)
 	u.Timeout = 60
 
-	updates, err := bot.GetUpdatesChan(u)
+	// updates, err := bot.GetUpdatesChan(u)
+	updates := bot.ListenForWebhook("/" + bot.Token)
+	http.HandleFunc("/", MainHandler)
+    go http.ListenAndServe(":"+os.Getenv("PORT"), nil)
 
 	for update := range updates {
 		if update.Message == nil {
