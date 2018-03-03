@@ -232,7 +232,7 @@ func main() {
 				    })
 				}()
 
-				msg0 += <-c + <-c1 + <- c2 + <-c3 + <-c4 + <-c5 + <-c6 + <-c7 + "\n_Средняя по погодам_ : \t\t" + "*+" + strconv.FormatFloat(sum/8, 'f', 2, 32) + "*\n" + timeTag
+				msg0 += <-c + <-c1 + <- c2 + <-c3 + <-c4 + <-c5 + <-c6 + <-c7 + "\n_Средняя по погодам_ : \t\t" + "*" + strconv.FormatFloat(sum/8, 'f', 2, 32) + "*\n" + timeTag
 				msg1 := tgbotapi.NewMessage(update.Message.Chat.ID, msg0)
 				msg1.ParseMode = "markdown"
 				bot.Send(msg1)
