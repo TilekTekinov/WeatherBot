@@ -214,5 +214,6 @@ func main() {
 		msg1 := tgbotapi.NewMessage(update.Message.Chat.ID, msg)
 		msg1.ParseMode = "markdown"
 		bot.Send(msg1)
+		msg = ""
 	}
 }
