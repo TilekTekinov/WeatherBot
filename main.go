@@ -130,7 +130,7 @@ func main() {
 					    doc.Find("body .curcond").Each(func(index int, item *goquery.Selection) {
 					        spanTag := item.Find(".current").Text()
 
-					        i, errt := strconv.Atoi(spanTag, 16)
+					        i, errt := strconv.Atoi(spanTag)
 					        checkin(errt)
 					        sum += i
 					        a := ""
@@ -149,7 +149,7 @@ func main() {
 				    doc.Find("body .weather-detailed").Each(func(index int, item *goquery.Selection) {
 				        spanTag := item.Find(".weather-now__value").Text()
 
-				        i, errt := strconv.Atoi(spanTag, 16)
+				        i, errt := strconv.Atoi(spanTag)
 				        checkin(errt)
 				        sum += i
 				        a := ""
@@ -170,7 +170,7 @@ func main() {
 					    doc.Find("body #wrapper #FheaderContent #archiveString .ArchiveTemp").Each(func(index int, item *goquery.Selection) {
 					        spanTag := item.Find(".t_0").Text()
 
-					        i, errt := strconv.Atoi(spanTag[:len(spanTag) - 4], 16)
+					        i, errt := strconv.Atoi(spanTag[:len(spanTag) - 4])
 					        checkin(errt)
 					        sum += i
 					        a := ""
@@ -191,7 +191,7 @@ func main() {
 
 				        spanTag = s.TrimSpace(spanTag)
 				        
-				        i, errt := strconv.Atoi(spanTag[:len(spanTag) - 2], 16)
+				        i, errt := strconv.Atoi(spanTag[:len(spanTag) - 2])
 				        checkin(errt)
 				        sum += i
 					    a := "*" + spanTag[:len(spanTag) - 2] + "*"
@@ -207,7 +207,7 @@ func main() {
 					    doc.Find("body .left .txt-xxlarge").Each(func(index int, item *goquery.Selection) {
 					        spanTag := item.Find("strong").Text()
 
-					        i, errt := strconv.Atoi(spanTag, 16)
+					        i, errt := strconv.Atoi(spanTag)
 					        checkin(errt)
 					        sum += i
 						    a := "*" + spanTag + "*"
@@ -220,7 +220,7 @@ func main() {
 				    doc.Find("body .fact .fact__temp").Each(func(index int, item *goquery.Selection) {
 				        spanTag := item.Find(".temp__value").Text()
 
-				        i, errt := strconv.Atoi(spanTag, 16)
+				        i, errt := strconv.Atoi(spanTag)
 				        checkin(errt)
 				        sum += i
 				        a := ""
@@ -241,7 +241,7 @@ func main() {
 					    doc.Find("body .now_block").Each(func(index int, item *goquery.Selection) {
 						spanTag := item.Find("strong").Text()
 
-					        i, errt := strconv.Atoi(spanTag[:len(spanTag) - 2], 16)
+					        i, errt := strconv.Atoi(spanTag[:len(spanTag) - 2])
 					        checkin(errt)
 					        sum += i
 					        a := "*" + spanTag[:len(spanTag) - 2] + "*"
@@ -256,7 +256,7 @@ func main() {
 				        spanTag := item.Find(".temp_title").Text()
 				        timeTag = item.Find(".fct_date").Text()
 
-				        i, errt := strconv.Atoi(spanTag[:len(spanTag) - 3], 16)
+				        i, errt := strconv.Atoi(spanTag[:len(spanTag) - 3])
 				        checkin(errt)
 				        sum += i
 				        a := "*" + spanTag[:len(spanTag) - 3] + "*"
