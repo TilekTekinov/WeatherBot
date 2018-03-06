@@ -109,9 +109,9 @@ func main() {
 						m = <- idea
 						if m == "done" {
 							if sum > 0 {
-							    strmsg += <-c + <-c1 + <- c2 + <-c3 + <-c4 + <-c5 + <-c6 + <-c7 + "\n_Средняя по погодам_ : \t\t" + "*" + strconv.Itoa(sum/8) + "*\n" + timeTag
+							    strmsg += <-c + <-c1 + <- c2 + <-c3 + <-c4 + <-c5 + <-c6 + <-c7 + "\n_Средняя по погодам_ : \t\t" + "*+" + strconv.Itoa(sum/8) + "*\n" + timeTag
 							} else {
-								strmsg += <-c + <-c1 + <- c2 + <-c3 + <-c4 + <-c5 + <-c6 + <-c7 + "\n_Средняя по погодам_ : \t\t" + "*+" + strconv.Itoa(sum/8) + "*\n" + timeTag
+								strmsg += <-c + <-c1 + <- c2 + <-c3 + <-c4 + <-c5 + <-c6 + <-c7 + "\n_Средняя по погодам_ : \t\t" + "*" + strconv.Itoa(sum/8) + "*\n" + timeTag
 							}
 							edmsg = tgbotapi.NewEditMessageText(update.Message.Chat.ID, lastid, strmsg)
 							edmsg.ParseMode = "markdown"
