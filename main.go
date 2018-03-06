@@ -13,8 +13,9 @@ import (
 )
 
 var (
-	timeTag, msg0 string
-	sum float64
+	timeTag, strmsg, a, m string
+	sum int
+	lastid = 0
 )
 
 var numericKeyboard = tgbotapi.NewReplyKeyboard(
@@ -81,6 +82,8 @@ func main() {
 		c5 := make(chan string)
 		c6 := make(chan string)
 		c7 := make(chan string)
+		idea := make(chan string)
+
 		msg := tgbotapi.NewMessage(update.Message.Chat.ID, update.Message.Text)
 		switch update.Message.Text {
 			case "/start":
@@ -90,6 +93,35 @@ func main() {
 				msg.ReplyMarkup = tgbotapi.NewRemoveKeyboard(true)
 				bot.Send(msg)
 			case "На сегодня" :
+				go func () {
+					msge := tgbotapi.NewMessage(update.Message.Chat.ID, "Начинаю поиск")
+					sm, _ := bot.Send(msge)
+		        	lastid = sm.MessageID
+					for {
+						edmsg := tgbotapi.NewEditMessageText(update.Message.Chat.ID, lastid, "Начинаю поиск")
+						bot.Send(edmsg)
+						edmsg = tgbotapi.NewEditMessageText(update.Message.Chat.ID, lastid, "Начинаю поиск..")
+						bot.Send(edmsg)
+		        		edmsg = tgbotapi.NewEditMessageText(update.Message.Chat.ID, lastid, "Начинаю поиск...")
+						bot.Send(edmsg)
+						edmsg = tgbotapi.NewEditMessageText(update.Message.Chat.ID, lastid, "Начинаю поиск....")
+						bot.Send(edmsg)
+						m = <- idea
+						if m == "done" {
+							if sum > 0 {
+							    strmsg += <-c + <-c1 + <- c2 + <-c3 + <-c4 + <-c5 + <-c6 + <-c7 + "\n_Средняя по погодам_ : \t\t" + "*" + strconv.FormatFloat(sum/8, 'f', 2, 32) + "*\n" + timeTag
+							} else {
+								strmsg += <-c + <-c1 + <- c2 + <-c3 + <-c4 + <-c5 + <-c6 + <-c7 + "\n_Средняя по погодам_ : \t\t" + "*+" + strconv.FormatFloat(sum/8, 'f', 2, 32) + "*\n" + timeTag
+							}
+							edmsg = tgbotapi.NewEditMessageText(update.Message.Chat.ID, lastid, strmsg)
+							edmsg.ParseMode = "markdown"
+							bot.Send(edmsg)
+							strmsg = ""
+							sum = 0.0
+							break
+						}
+			    	}
+				}()
 				go func () {
 					go func () {
 						doc, err := goquery.NewDocument("https://www.msn.com/ru-ru/weather/today/%D0%91%D0%B8%D1%88%D0%BA%D0%B5%D0%BA,%D0%91%D0%B8%D1%88%D0%BA%D0%B5%D0%BA,%D0%9A%D0%B8%D1%80%D0%B3%D0%B8%D0%B7%D0%B8%D1%8F/we-city?iso=KG&el=fuYFCItsFctEWpKyC2zWbQ%3D%3D")
@@ -231,16 +263,7 @@ func main() {
 				        c6 <- "Bishkek pogoda.desko.kg: \t" + a + "\n"
 				    })
 				}()
-				if sum > 0 {
-				    msg0 += <-c + <-c1 + <- c2 + <-c3 + <-c4 + <-c5 + <-c6 + <-c7 + "\n_Средняя по погодам_ : \t\t" + "*" + strconv.FormatFloat(sum/8, 'f', 2, 32) + "*\n" + timeTag
-				} else {
-					msg0 += <-c + <-c1 + <- c2 + <-c3 + <-c4 + <-c5 + <-c6 + <-c7 + "\n_Средняя по погодам_ : \t\t" + "*+" + strconv.FormatFloat(sum/8, 'f', 2, 32) + "*\n" + timeTag
-				}
-				msg1 := tgbotapi.NewMessage(update.Message.Chat.ID, msg0)
-				msg1.ParseMode = "markdown"
-				bot.Send(msg1)
-				msg0 = ""
-				sum = 0.0
+				
 			default :
 				bot.Send(tgbotapi.NewMessage(update.Message.Chat.ID, "Моя твоя не понимать\nСорян))"))
 		}
