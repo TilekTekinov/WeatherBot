@@ -117,7 +117,7 @@ func main() {
 							edmsg.ParseMode = "markdown"
 							bot.Send(edmsg)
 							strmsg = ""
-							sum = 0.0
+							sum = 0
 							break
 						}
 			    	}
@@ -263,6 +263,8 @@ func main() {
 				        c6 <- "Bishkek pogoda.desko.kg: \t" + a + "\n"
 				    })
 				}()
+
+				idea <- "done"
 				
 			default :
 				bot.Send(tgbotapi.NewMessage(update.Message.Chat.ID, "Моя твоя не понимать\nСорян))"))
