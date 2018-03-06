@@ -265,14 +265,9 @@ func main() {
 				}()
 
 				idea <- "done"
-				
+
 			default :
 				bot.Send(tgbotapi.NewMessage(update.Message.Chat.ID, "Моя твоя не понимать\nСорян))"))
 		}
-
-
-
-
-		
 	}
 }
