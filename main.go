@@ -11,10 +11,12 @@ import (
 
 	"gopkg.in/telegram-bot-api.v4"
 	"github.com/PuerkitoBio/goquery"
+	"github.com/kelseyhightower/envconfig"
 )
 
 var (
 	timeTag, strmsg, a, m string
+ 	telegramBotToken string `envconfig:"TELEGRAM_TOKEN"`
 	sum int
 	lastid = 0
 )
@@ -24,11 +26,6 @@ var numericKeyboard = tgbotapi.NewReplyKeyboard(
 		tgbotapi.NewKeyboardButton("На сегодня"),
 	),
 )
-
-var (
- 	// глобальная переменная в которой храним токен
- 	telegramBotToken string
- )
 
 func check(err error) {
 	if err != nil {
@@ -45,18 +42,6 @@ func checkin(errt error) {
 func MainHandler(resp http.ResponseWriter, _ *http.Request) {
     resp.Write([]byte("Hi there! I'm Working!"))
 }
-
-func init() {
- 	// принимаем на входе флаг -telegrambottoken
- 	flag.StringVar(&telegramBotToken, "telegrambottoken", "", "Telegram Bot Token")
- 	flag.Parse()
- 
- 	// без него не запускаемся
- 	if telegramBotToken == "" {
- 		log.Print("-telegrambottoken is required")
- 		os.Exit(1)
- 	}
- }
 
 func main() {
 	bot, err := tgbotapi.NewBotAPI(telegramBotToken)
