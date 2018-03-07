@@ -6,7 +6,8 @@ import (
 	"strconv"
 	"net/http"
 	s "strings"
-	"encoding/json"
+	// "encoding/json"
+	"flag"
 
 	"gopkg.in/telegram-bot-api.v4"
 	"github.com/PuerkitoBio/goquery"
@@ -24,9 +25,10 @@ var numericKeyboard = tgbotapi.NewReplyKeyboard(
 	),
 )
 
-type Config struct {
-	TelegramBotToken string
-}
+var (
+ 	// глобальная переменная в которой храним токен
+ 	telegramBotToken string
+ )
 
 func check(err error) {
 	if err != nil {
@@ -41,19 +43,23 @@ func checkin(errt error) {
 }
 
 func MainHandler(resp http.ResponseWriter, _ *http.Request) {
-    resp.Write([]byte("Hi there! I'm DndSpellsBot!"))
+    resp.Write([]byte("Hi there! I'm Working!"))
 }
 
-func main() {
-	file, _ := os.Open("config.json")
-	decoder := json.NewDecoder(file)
-	configuration := Config{}
-	err := decoder.Decode(&configuration)
-	if err != nil {
-		log.Panic(err)
-	}
+func init() {
+ 	// принимаем на входе флаг -telegrambottoken
+ 	flag.StringVar(&telegramBotToken, "telegrambottoken", "", "Telegram Bot Token")
+ 	flag.Parse()
+ 
+ 	// без него не запускаемся
+ 	if telegramBotToken == "" {
+ 		log.Print("-telegrambottoken is required")
+ 		os.Exit(1)
+ 	}
+ }
 
-	bot, err := tgbotapi.NewBotAPI(configuration.TelegramBotToken)
+func main() {
+	bot, err := tgbotapi.NewBotAPI(telegramBotToken)
 	if err != nil {
 		log.Panic(err)
 	}
