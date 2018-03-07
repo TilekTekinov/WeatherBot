@@ -9,7 +9,6 @@ import (
 
 	"gopkg.in/telegram-bot-api.v4"
 	"github.com/PuerkitoBio/goquery"
-	"github.com/kelseyhightower/envconfig"
 )
 
 var (
@@ -41,12 +40,7 @@ func MainHandler(resp http.ResponseWriter, _ *http.Request) {
 }
 
 func main() {
-	c, err := conf.GetConfig()
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	bot, err := tgbotapi.NewBotAPI(c.TelegramToken)
+	bot, err := tgbotapi.NewBotAPI(os.Getenv("TELEGRAM_TOKEN"))
 	if err != nil {
 		log.Panic(err)
 	}
