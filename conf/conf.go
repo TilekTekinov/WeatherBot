@@ -10,6 +10,6 @@ type BotConfig struct {
 // GetConfig ...
 func GetConfig() (BotConfig, error) {
 	var c BotConfig
-	err := envconfig.Process("bot", &c)
+	err := envconfig.Process("main", &c)
 	return c, err
 }
