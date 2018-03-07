@@ -13,6 +13,11 @@
 			"Rev": "349dd0209470eabd9514242c688c403c0926d266"
 		},
 		{
+			"ImportPath": "github.com/kelseyhightower/envconfig",
+			"Comment": "v1.3.0-11-g1f94cfa",
+			"Rev": "1f94cfab3dcc47159a6dcb83588baa3d8260e78a"
+		},
+		{
 			"ImportPath": "github.com/technoweenie/multipartstreamer",
 			"Comment": "v1.0.1",
 			"Rev": "a90a01d73ae432e2611d178c18367fbaa13e0154"

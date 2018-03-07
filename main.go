@@ -6,8 +6,6 @@ import (
 	"strconv"
 	"net/http"
 	s "strings"
-	// "encoding/json"
-	"flag"
 
 	"gopkg.in/telegram-bot-api.v4"
 	"github.com/PuerkitoBio/goquery"
@@ -16,7 +14,6 @@ import (
 
 var (
 	timeTag, strmsg, a, m string
- 	telegramBotToken string `envconfig:"TELEGRAM_TOKEN"`
 	sum int
 	lastid = 0
 )
@@ -44,7 +41,12 @@ func MainHandler(resp http.ResponseWriter, _ *http.Request) {
 }
 
 func main() {
-	bot, err := tgbotapi.NewBotAPI(telegramBotToken)
+	c, err := conf.GetConfig()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	bot, err := tgbotapi.NewBotAPI(c.TelegramToken)
 	if err != nil {
 		log.Panic(err)
 	}
